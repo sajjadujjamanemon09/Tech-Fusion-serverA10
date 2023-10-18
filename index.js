@@ -32,8 +32,15 @@ async function run() {
     await client.connect();
 
 
+    const brandCollection = client.db('productDB').collection('brands')
     const productCollection = client.db('productDB').collection('product')
 
+
+    app.get('/brands', async(req , res) => {
+        const cursor = brandCollection.find();
+        const result = await cursor.toArray();
+        res.send(result);
+    })
 
     app.get('/product', async(req , res) => {
         const cursor = productCollection.find();
@@ -41,6 +48,20 @@ async function run() {
         res.send(result);
     })
 
+    // show product brands base
+    app.get('/product/:brandName', async (req, res) => {
+      const brandName = req.params.brandName;
+      const query = { brand: brandName }
+      const result = await productCollection.find(query).toArray();
+      res.send(result);
+  })
+
+    app.post('/brands', async(req, res) => {
+        const newProduct = req.body;
+        console.log(newProduct);
+        const result = await brandCollection.insertOne(newProduct)
+        res.send(result);
+    })
     app.post('/product', async(req, res) => {
         const newProduct = req.body;
         console.log(newProduct);
