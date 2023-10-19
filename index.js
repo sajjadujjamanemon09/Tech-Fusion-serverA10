@@ -65,7 +65,7 @@ async function run() {
   })
 
 
-    // show singleProduct details brands base
+    // show singleProduct detail brands base
     app.get('/singleProduct/:_id', async (req, res) => {
       const id = req.params._id;
       const query = { _id: new ObjectId(id)  }
