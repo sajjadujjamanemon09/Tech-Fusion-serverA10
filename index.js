@@ -75,6 +75,28 @@ async function run() {
 
 
 
+  // // update product
+  app.put('/singleProduct/:_id', async (req, res) => {
+    const id = req.params._id;
+    const filter = { _id: new ObjectId(id)  }
+    const updated = req.body;
+    const update = {
+      $set: {
+        name: updated.name, 
+        brand: updated.brand, 
+        type: updated.type, 
+        price: updated.price, 
+        description: updated.description, 
+        image: updated.image, 
+        rating: updated.rating
+      }
+    }
+    const result = await productCollection.updateOne(filter,update)
+    res.send(result)
+  })
+
+
+
 
     app.post('/product', async(req, res) => {
         const newProduct = req.body;
