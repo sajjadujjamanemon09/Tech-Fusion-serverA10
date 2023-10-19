@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000
 
 // middleware
@@ -42,6 +42,14 @@ async function run() {
         res.send(result);
     })
 
+    app.post('/brands', async(req, res) => {
+      const newProduct = req.body;
+      console.log(newProduct);
+      const result = await brandCollection.insertOne(newProduct)
+      res.send(result);
+  })
+
+
     app.get('/product', async(req , res) => {
         const cursor = productCollection.find();
         const result = await cursor.toArray();
@@ -56,12 +64,18 @@ async function run() {
       res.send(result);
   })
 
-    app.post('/brands', async(req, res) => {
-        const newProduct = req.body;
-        console.log(newProduct);
-        const result = await brandCollection.insertOne(newProduct)
-        res.send(result);
-    })
+
+    // show singleProduct details brands base
+    app.get('/singleProduct/:_id', async (req, res) => {
+      const id = req.params._id;
+      const query = { _id: new ObjectId(id)  }
+      const result = await productCollection.findOne(query);
+      res.send(result);
+  })
+
+
+
+
     app.post('/product', async(req, res) => {
         const newProduct = req.body;
         console.log(newProduct);
