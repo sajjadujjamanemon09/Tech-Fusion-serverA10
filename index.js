@@ -114,7 +114,7 @@ async function run() {
 })
 
 
-// delete
+// delete method
 app.delete('/carts/:id', async (req, res) => {
   const id = req.params.id;
   const query = { _id: new ObjectId(id) };
